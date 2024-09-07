@@ -1,6 +1,6 @@
 # Django Starter Generator (DSG)
 
-![DSG](https://github.com/Hildbjorn/django_starter_generator/blob/main/dag_hero.png?raw=true)
+![DSG](https://github.com/Hildbjorn/django_starter_generator/blob/main/dsg_hero.png?raw=true)
 
 ## Описание проекта
 Django Starter Generator (DSG) — это инструмент, предназначенный для упрощения и ускорения процесса создания новых проектов на базе Django в операционной системе Windows. DSG позволяет пользователям быстро настраивать проекты, автоматизирует процесс установки необходимых компонентов и библиотек, а также предоставляет функционал авторизации через email, уведомления в Telegram и возможность редактирования профилей пользователей.
