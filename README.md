@@ -91,4 +91,4 @@ Django Starter Generator (DSG) — это инструмент, предназн
 - Не передаются права на торговые марки
 
 ---
-## © 2024 Artem Fomin
+**© 2024 Artem Fomin**
