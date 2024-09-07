@@ -330,6 +330,18 @@ class DjangoStarterGenerator():
         # Удаление bat файла
         os.remove(script_file_path)
 
+    def start_script(self):
+        """
+        Функция создания скрипта для запуска проекта Django на Windows.
+        """
+        pass
+
+    def unzip_sources(self):
+        """
+        Функция распаковки необходимых файлов для проекта.
+        """
+        pass
+
     def main(self):
         # Приветствие пользователя.
         message = Messages.GREETING
@@ -337,11 +349,11 @@ class DjangoStarterGenerator():
         utils.clear()
         print(Messages.HERO)
         utils.print_message()
-
-        # Создание и настройка проекта.
+        # Создание, настройка и запуск проекта.
         self.get_initial_data()
         self.initial_script()
-
+        self.unzip_sources()
+        self.start_script()
         # Сообщение об успешном создании проекта.
         message = Messages.SUCCESS
         utils = Utils(message)
