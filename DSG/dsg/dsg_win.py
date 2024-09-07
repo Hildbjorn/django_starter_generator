@@ -354,6 +354,7 @@ class DjangoStarterGenerator():
         message = Messages.SUCCESS
         utils = Utils(message)
         utils.print_message()
+        print("\n", Messages.HERO)
 
 
 # ========================= Основные алгоритмы =========================== #
