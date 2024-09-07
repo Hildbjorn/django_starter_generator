@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  До свидания!
+{% endblock %}
+
+{% block content %}
+  <!-- Контент страницы -->
+  <div class="container bg-body-tertiary rounded shadow-sm w-auto my-auto p-3 p-lg-4">
+    <h2>До свидания!</h2>
+    <div class="text-center mt-5">
+      <p>
+        <b>Вы&nbsp;вышли из&nbsp;учетной записи</b>
+      </p>
+    </div>
+    <div class="d-flex row justify-content-end px-3 gap-2">
+      <a href="{% url 'login' %}" class="btn_submit btn btn-lg btn-primary my-3">Войти снова</a>
+    </div>
+  </div>
+  <!-- *********** -->
+{% endblock %}

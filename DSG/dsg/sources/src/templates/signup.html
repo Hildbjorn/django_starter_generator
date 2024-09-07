@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}
+  Регистрация пользователя
+{% endblock %}
+
+{% block content %}
+  <!-- Контент страницы -->
+  <div class="container bg-body-tertiary rounded shadow-sm w-auto my-auto p-3 p-lg-4">
+    <h2>Регистрация пользователя</h2>
+    <div class="mt-5">
+      <form action="{{ action }}" id="registration_form" method="POST" enctype="multipart/form-data" class="form">
+        {% csrf_token %}
+        <div class="my-3">
+          <div class="form-floating my-3">
+            {{ form.email|add_class:'form-control'|attr:'id:id_username'|attr:'placeholder:name@example.com' }}
+            <label for="id_username">{{ form.email.label }}</label>
+          </div>
+          <div class="form-floating my-3">
+            {{ form.password1|add_class:'form-control floating'|attr:'id:id_password1'|attr:'placeholder:Пароль' }}
+            <label for="id_password1">{{ form.password1.label }}</label>
+            <div id="password1Help" class="form-text">{{ form.password1.errors }}</div>
+          </div>
+          <div class="form-floating my-3">
+            {{ form.password2|add_class:'form-control floating'|attr:'id:id_password2'|attr:'placeholder:Пароль' }}
+            <label for="id_password2">{{ form.password2.label }}</label>
+            <div id="password2Help" class="form-text">{{ form.password2.errors }}</div>
+          </div>
+        </div>
+        <div class="d-flex row justify-content-end px-3 gap-2">
+          <button type="submit" class="btn btn-lg btn_submit btn-primary my-3">Зарегистрироваться</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- *********** -->
+{% endblock %}

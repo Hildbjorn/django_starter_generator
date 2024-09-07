@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load users_tags %}
+
+{% block title %}
+    {% if user.first_name and user.last_name %}
+        {{ user.first_name }} {{ user.last_name }}
+    {% else %}
+        {{ user.get_username }}
+    {% endif %} - Личный кабинет
+{% endblock %}
+
+<!-- META TAGS -->
+{% block meta_tags %}
+  <!-- Основные -->
+  <meta name="description" content="Новый проект Django. Удачной разработки" />
+  <meta name="keywords" content="новый, проект, Django" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://stratman.pro/" />
+
+  <!-- Для Фейсбука, ВКонтакте, Одноклассников и Гуглплюса -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Новый проект Django" />
+  <meta property="og:title" content="Новый проект Django" />
+  <meta property="og:description" content="Новый проект Django. Удачной разработки" />
+  <meta property="og:url" content="https://stratman.pro/" />
+  <meta property="og:locale" content="ru_RU" />
+
+  <!-- Для Твиттера и Вконтакта -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Новый проект Django" />
+  <meta name="twitter:description" content="Новый проект Django. Удачной разработки" />
+  <meta name="twitter:image:src" content="{% static 'img/elements/logo.png' %}" />
+  <meta name="twitter:url" content="https://stratman.pro/" />
+  <meta name="twitter:domain" content="Новый проект Django" />
+  <meta name="twitter:site" content="Новый проект Django" />
+  <meta name="twitter:creator" content="@stratman.pro" />
+
+  <!-- Для Гуглплюса -->
+  <meta itemprop="name" content="Новый проект Django" />
+  <meta itemprop="description" content="Новый проект Django. Удачной разработки" />
+  <meta itemprop="image" content="{% static 'img/elements/logo.png' %}" />
+{% endblock %}
+
+{% block content %}
+
+    <!-- Контент главной страницы -->
+    <div class="container bg-body-tertiary rounded shadow-sm my-auto p-3 p-lg-4">
+        <div class="container">
+            <h2>Карточка пользователя</h2>
+            <div class="mt-5">
+                <form action="{{ action }}" id="account_form" method="POST" enctype="multipart/form-data" class="form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h6>Личные данные</h6>
+                            <div class="mt-2 mb-2">
+                                <div class="form-floating mb-1">
+                                    {{ form.last_name }}
+                                    <label for="last_name">{{ form.last_name.label }}</label>
+                                </div>
+                                <div class="form-floating mb-1">
+                                    {{ form.first_name }}
+                                    <label for="first_name">{{ form.first_name.label }}</label>
+                                </div>
+                                <div class="form-floating mb-1">
+                                    {{ form.middle_name }}
+                                    <label for="middle_name">{{ form.middle_name.label }}</label>
+                                </div>
+                            </div>
+                            <h6>О работе</h6>
+                            <div class="mt-2 mb-2">
+                                <div class="form-floating mb-1">
+                                    {{ form.company }}
+                                    <label for="company">{{ form.company.label }}</label>
+                                </div>
+                                <div class="form-floating mb-1">
+                                    {{ form.position }}
+                                    <label for="position">{{ form.position.label }}</label>
+                                </div>
+                                <div class="form-floating mb-1">
+                                    {{ form.rank }}
+                                    <label for="rank">{{ form.rank.label }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <h6>Контакты:</h6>
+                            <div class="mt-2 mb-2">
+                                <div class="form-floating mb-1">
+                                    {{ form.phone }}
+                                    <label for="phone">{{ form.phone.label }}</label>
+                                </div>
+                                <div class="form-floating mb-1">
+                                    {{ form.email }}
+                                    {{ form.email.errors }}
+                                    <label for="email">{{ form.email.label }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-5">
+                        <div class="col-sm-8">
+                            <div class="mt-2 mb-2">
+                                <div class="form-check form-switch">
+                                    {{ form.agreement }}
+                                    <label class="form-check-label" for="agreement">Согласие на&nbsp;обработку персональных данных</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mt-2 mb-2 text-end">
+                                <button type="submit" class="btn btn_submit btn-primary btn_width">Обновить</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- *********** -->
+
+{% endblock %}
