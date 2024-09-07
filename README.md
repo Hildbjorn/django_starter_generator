@@ -44,31 +44,31 @@ Django Starter Generator (DSG) — это инструмент, предназн
 ## 📦 Библиотеки
 Все актуальные версии библиотек загружаются автоматически при установке DSG и являются необходимыми для корректной работы проекта.
 
-- aiohappyeyeballs
-- aiohttp
-- aiosignal
-- asgiref
-- attrs
-- Django
-- django-utils-six
-- django-widget-tweaks
-- frozenlist
-- idna
-- multidict
-- pillow
-- python-dotenv
-- pytils
-- slugify
-- sqlparse
-- telepot
-- typus
-- tzdata
-- urllib3
-- yarl
+- [aiohappyeyeballs](link)
+- [aiohttp](link)
+- [aiosignal](link)
+- [asgiref](link)
+- [attrs](link)
+- [Django](link)
+- [django-utils-six](link)
+- [django-widget-tweaks](link)
+- [frozenlist](link)
+- [idna](link)
+- [multidict](link)
+- [pillow](link)
+- [python-dotenv](link)
+- [pytils](link)
+- [slugify](link)
+- [sqlparse](link)
+- [telepot](link)
+- [typus](link)
+- [tzdata](link)
+- [urllib3](link)
+- [yarl](link)
 
 ---
 ## 📦 Компоненты
-- Bootstrap 5.3.3 — мощный, расширяемый и полнофункциональный инструментарий для интерфейса.
+- [Bootstrap 5.3.3](https://getbootstrap.com) — мощный, расширяемый и полнофункциональный инструментарий для интерфейса.
 
 ---
 ## ⚠️ Лицензия
