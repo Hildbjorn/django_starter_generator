@@ -5,7 +5,7 @@
 </p>
 
 ## Установка
-Чтобы установить Django Starter Generator, просто скачайте и распакуйте архив [dsg.zip](link) в папку `<your_project>/dsg` создаваемого вами проекта.
+Чтобы установить Django Starter Generator, просто скачайте и распакуйте архив [dsg.zip](https://github.com/Hildbjorn/django_starter_generator/blob/main/DSG/dsg.zip) в папку `<your_project>/dsg` создаваемого вами проекта.
 
 ## Использование
 Перейдите в папку `<your_project>/dsg` и запустите файл `start.bat`, где `<your_project>` - это корневая папка создаваемого вами проекта.
