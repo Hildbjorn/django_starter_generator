@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import re
 import shutil
@@ -343,17 +344,26 @@ class DjangoStarterGenerator():
                                                 cd ..
                                                 python -m venv env
                                                 call env\\Scripts\\activate
-                                                call python.exe -m pip install --upgrade pip
-                                                pip install Django
-                                                pip install python-dotenv
-                                                pip install telepot
-                                                pip install django-utils-six
-                                                pip install typus
-                                                pip install django-widget-tweaks
+                                                echo     - Updating pip...
+                                                call python.exe -m pip install --upgrade pip --quiet
+                                                echo     - Installing Django...
+                                                pip install Django --quiet
+                                                echo     - Installing Python-Dotenv...
+                                                pip install python-dotenv --quiet
+                                                echo     - Installing Telepot...
+                                                pip install telepot --quiet
+                                                echo     - Installing django-utils-six...
+                                                pip install django-utils-six --quiet
+                                                echo     - Installing Typus...
+                                                pip install typus --quiet
+                                                echo     - Installing django-widget-tweaks...
+                                                pip install django-widget-tweaks --quiet
+                                                echo     - Saving dependencies in requirements.txt...
                                                 pip freeze > requirements.txt
                                                 mkdir src
                                                 cd src
                                                 mkdir static
+                                                echo     - Initializing a new Django project...
                                                 django-admin startproject {self.project_name} .
                                                 """)
         # Создание bat файла
@@ -383,22 +393,22 @@ class DjangoStarterGenerator():
         """
         # Создание скрипта страта нового проекта Django
         start_script = textwrap.dedent(f"""
-                            @echo off
-                            cd ..
-                            call env\\Scripts\\activate
-                            cd src
-                            python manage.py makemigrations
-                            python manage.py migrate
-                            set DJANGO_SUPERUSER_EMAIL={self.superuser_email}
-                            set DJANGO_SUPERUSER_PASSWORD={self.superuser_password}
-                            python manage.py createsuperuser --no-input
-                            REM call env\\Scripts\\activate
-                            REM cd src
-                            python manage.py makemigrations
-                            python manage.py migrate
-                            start python manage.py runserver
-                            start "" http://localhost:8000
-                            """)
+                                            @echo off
+                                            cd ..
+                                            call env\\Scripts\\activate
+                                            cd src
+                                            echo     - Making migrations...
+                                            python manage.py makemigrations > nul 2>&1
+                                            echo     - Application of migrations...
+                                            python manage.py migrate > nul 2>&1
+                                            echo     - Creating a superuser...
+                                            set DJANGO_SUPERUSER_EMAIL={self.superuser_email}
+                                            set DJANGO_SUPERUSER_PASSWORD={self.superuser_password}
+                                            python manage.py createsuperuser --no-input > nul 2>&1
+                                            echo     - Starting the server...
+                                            start python manage.py runserver > nul 2>&1
+                                            start "" http://localhost:8000/
+                                            """)
         # Создание bat файла
         start_script_path = '..\start_script.bat'
         with open(start_script_path, 'w') as file:
@@ -540,7 +550,7 @@ class DjangoStarterGenerator():
         """Метод удаления папки dsg, чтобы остался только чистый проект"""
         # Получаем путь к директории dsg.
         dsg_folder = os.getcwd()
-        for attempt in range(5):  # Попытка удалить 5 раз
+        for attempt in range(1):  # Попытка удалить 1 раз
             try:
                 shutil.rmtree(dsg_folder)
                 # print(f"Директория '{dsg_folder}' успешно удалена.")
@@ -548,6 +558,52 @@ class DjangoStarterGenerator():
             except Exception as e:
                 # print(f"Ошибка при удалении директории: {e}")
                 time.sleep(1)  # Задержка перед повторной попыткой
+
+    def create_dag_card(self):
+        """ Метод создания визитки приложения """
+        # Получение текущей даты и времени в нужном формате
+        current_time = datetime.now().strftime("%d.%m.%Y %H:%M")
+
+        message = ''
+
+        if Messages.reminds:  # Проверяем, не пустой ли список
+            message = f"""
+Внимание! Вы отложили некоторые настройки на потом.
+
+Не забудьте:
+            """
+            for remind in Messages.reminds:
+                # Добавляем напоминания в нужном формате
+                message += f'\n- {remind}'
+            message += textwrap.dedent(
+                f"""-------------------------------------------------------------------""").strip()
+
+            # Форматирование визитки
+        dsg_card = textwrap.dedent(f"""
+
+██████╗     ███████╗     ██████╗     Django Starter Generator -
+██╔══██╗    ██╔════╝    ██╔════╝     приложение для автоматизации
+██║  ██║    ███████╗    ██║  ███╗    создания, настройки и первого
+██║  ██║    ╚════██║    ██║   ██║    запуска проектов на Django.
+██████╔╝    ███████║    ╚██████╔╝
+╚═════╝     ╚══════╝     ╚═════╝     Copyright (c) 2024 Artem Fomin
+
+-------------------------------------------------------------------
+
+Github: https://github.com/Hildbjorn/django_starter_generator
+
+-------------------------------------------------------------------
+
+{current_time}: Создан проект: {self.project_name}.
+
+-------------------------------------------------------------------
+{message}
+
+Спасибо, за внимание к проекту!
+        """).strip()
+        # Сохранение визитки в файл
+        with open('dsg_card.txt', 'w', encoding='utf-8') as file:
+            file.write(dsg_card.strip())
 
     def main(self):
         # Приветствие пользователя.
@@ -569,10 +625,12 @@ class DjangoStarterGenerator():
         self.final_reminds()
         # Запрос окончания работы.
         print("\n", Messages.HERO)
-        input(
-            f"\n    Нажмите {Colors.CYAN}Enter{Colors.RESET} для завершения программы...")
+        # input(
+        #     f"\n    Нажмите {Colors.CYAN}Enter{Colors.RESET} для завершения программы...")
         # Удаляем исходники, оставляя чистый проект.
         self.delete_dsg_folder()
+        # Создаем визитку приложения.
+        self.create_dag_card()
 
 
 # ========================= Основные алгоритмы =========================== #
