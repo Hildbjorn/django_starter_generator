@@ -6,6 +6,20 @@ import zipfile
 from getpass import getpass
 
 
+class Utils():
+    """
+    Класс Utils содержит общие утилитарные методы для работы Django Starter Generator.
+    """
+
+    def clear(self):
+        # Для Windows
+        if os.name == 'nt':
+            os.system('cls')
+        # Для Unix-подобных систем
+        else:
+            os.system('clear')
+
+
 class Colors:
     """ Цвета сообщений """
     RESET = "\033[0m"
@@ -18,7 +32,12 @@ class Colors:
     WHITE = "\033[37m"
 
 
-class Messages:
+class Messages():
+
+    def __init__(self, message=None, color=Colors.RESET):
+        self.message = message
+        self.color = color
+
     """ Класс сообщений """
     HERO = f"""{Colors.GREEN}
     ██████╗     ███████╗     ██████╗     Django Starter Generator -
@@ -80,6 +99,23 @@ class Messages:
     Удачной разработки!
     """
 
+    reminds = []
+
+    def print_message(self):
+        """
+        Вывод сообщения
+        """
+        lines = self.message.split('\n')
+        # очистка каждой строки от пробелов в начале и в конце
+        lines = [line.strip() for line in lines]
+        # заменяем табуляции на 4 пробела
+        lines = [line.replace('\t', '    ') for line in lines]
+        max_len = max(len(line) for line in lines)
+        print(f"\n{self.color}   ╭{'─' * (max_len + 4)}╮")
+        for line in lines:
+            print(f"   │  {line.ljust(max_len)}  │")
+        print(f".oO╰{'─' * (max_len + 4)}╯{Colors.RESET}\n")
+
 
 class Logger:
     def info(self, message):
@@ -92,42 +128,11 @@ class Logger:
         print(f"{Colors.RED}[ERROR]{Colors.RESET} {message}")
 
 
-class Utils():
-    """
-    Класс Utils содержит общие утилитарные методы для работы Django Starter Generator.
-    """
-
-    def __init__(self, message=None):
-        self.message = message
-
-    def clear(self):
-        # Для Windows
-        if os.name == 'nt':
-            os.system('cls')
-        # Для Unix-подобных систем
-        else:
-            os.system('clear')
-
-    def print_message(self):
-        """
-        Вывод сообщения
-        """
-        lines = self.message.split('\n')
-        # очистка каждой строки от пробелов в начале и в конце
-        lines = [line.strip() for line in lines]
-        # заменяем табуляции на 4 пробела
-        lines = [line.replace('\t', '    ') for line in lines]
-        max_len = max(len(line) for line in lines)
-        print(f"\n{Colors.YELLOW}   ╭{'─' * (max_len + 4)}╮")
-        for line in lines:
-            print(f"   │  {line.ljust(max_len)}  │")
-        print(f".oO╰{'─' * (max_len + 4)}╯{Colors.RESET}\n")
-
-
 class DjangoStarterGenerator():
     """Класс для создания и запуска проекта Django."""
 
     def __init__(self):
+        """ Метод инициации класса DjangoStarterGenerator """
         self.project_name = 'core'
         self.superuser_email = 'admin@mysite.ru'
         self.superuser_password = ''
@@ -142,7 +147,7 @@ class DjangoStarterGenerator():
         self.admin_telegram_id = None
 
     def is_valid_password(self, password):
-        """Проверяет, соответствует ли пароль заданным требованиям."""
+        """Метод проверки соответствия пароля заданным требованиям."""
         logger = Logger()
         if len(password) < 8:
             logger.error(Messages.PASSWORD_ERRORS[0])
@@ -166,7 +171,7 @@ class DjangoStarterGenerator():
 
     def get_project_name(self):
         """
-        Получает название проекта.
+        Метод получения названия проекта.
         """
         project_name = input(
             f'    Введите название проекта (нажмите Enter для использования "{Colors.CYAN}{self.project_name}{Colors.RESET}"): ')
@@ -176,12 +181,12 @@ class DjangoStarterGenerator():
 
     def get_superuser_data(self):
         """
-        Получает данные суперпользователя (email и пароль).
+        Метод получения данных суперпользователя (email и пароль).
         """
         logger = Logger()
         message = Messages.PASSWORD_REQUIREMENTS
-        utils = Utils(message)
-        utils.print_message()
+        print_message = Messages(message=message, color=Colors.CYAN)
+        print_message.print_message()
         # Запрос email пользователя.
         email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         while True:
@@ -209,12 +214,17 @@ class DjangoStarterGenerator():
 
     def get_email_server_settings(self):
         """
-        Запрашивает у пользователя настройки почтового сервера.
+
+        """
+
+    def get_email_server_settings(self):
+        """
+        Метод запроса настроек почтового сервера.
         """
         logger = Logger()
         message = Messages.EMAIL_SETUP_START
-        utils = Utils(message)
-        utils.print_message()
+        print_message = Messages(message=message, color=Colors.CYAN)
+        print_message.print_message()
         setup_now = input(
             f"    Хотите ли вы сразу настроить почтовый сервер? {Colors.CYAN}(y/n){Colors.RESET}: ").strip().lower()
         if setup_now == 'y':
@@ -227,7 +237,8 @@ class DjangoStarterGenerator():
             self.email_host_password = getpass(
                 f"""\n    Введите пароль: """).strip()
             self.default_from_email = input(
-                f"""\n    Введите имя и email, которыt будет использоваться в качестве отправителя (например, "{Colors.CYAN}Django Starter Generator <info@dsg.pro>{Colors.RESET}"): """).strip()
+                f"""\n    Введите имя и email, которыt будет использоваться в качестве отправителя
+    (например, "{Colors.CYAN}Django Starter Generator <info@dsg.pro>{Colors.RESET}"): """).strip()
             # Сначала спрашиваем про SSL
             use_ssl = input(f"\n    Использовать SSL? {
                             Colors.CYAN}(y/n){Colors.RESET}: ").strip().lower()
@@ -252,19 +263,23 @@ class DjangoStarterGenerator():
                     "Некорректный ввод. Установлены значения по умолчанию: SSL=False, TLS=False.")
         elif setup_now == 'n':
             message = Messages.EMAIL_SETUP_LATER
-            utils = Utils(message)
-            utils.print_message()
+            Messages.reminds.append(
+                f'''Указать настройки почтового сервера в файле ".env",
+                чтобы приложение могло отправлять письма (нужно для подтверждения email новых пользователей)
+                ''')
+            print_message = Messages(message=message, color=Colors.YELLOW)
+            print_message.print_message()
         else:
             logger.error("Некорректный ввод. Пожалуйста, введите 'y' или 'n'.")
 
     def get_telegram_settings(self):
         """
-        Запрашивает у пользователя настройки Telegram.
+        Метод запроса настроек Telegram.
         """
         logger = Logger()
         message = Messages.TELEGRAM_SETUP_START
-        utils = Utils(message)
-        utils.print_message()
+        print_message = Messages(message=message, color=Colors.CYAN)
+        print_message.print_message()
         setup_now = input(
             f"    Хотите ли вы сразу настроить почтовый сервер? {Colors.CYAN}(y/n){Colors.RESET}: ").strip().lower()
         if setup_now == 'y':
@@ -274,18 +289,24 @@ class DjangoStarterGenerator():
                 f"\n    Введите Telegram ID администратора: ").strip()
         elif setup_now == 'n':
             message = Messages.TELEGRAM_SETUP_LATER
-            utils = Utils(message)
-            utils.print_message()
+            Messages.reminds.append(
+                f'''Указать настройки Telegram в файле ".env",
+                чтобы приложение могло отправлять администратору уведомления о регистрации новых пользователей
+                ''')
+            print_message = Messages(message=message, color=Colors.YELLOW)
+            print_message.print_message()
         else:
             logger.error("Некорректный ввод. Пожалуйста, введите 'y' или 'n'.")
 
     def get_initial_data(self):
+        """ Метод формирования исходных данных """
         self.get_project_name()
         self.get_superuser_data()
         self.get_email_server_settings()
         self.get_telegram_settings()
 
     def initial_script(self):
+        """ Метод создания нового проекта Django """
         logger = Logger()
         install_script = textwrap.dedent(f"""
                                                 @echo off
@@ -311,9 +332,9 @@ class DjangoStarterGenerator():
             file.write(install_script)
         # Запуск bat файла
         if os.path.exists(script_file_path):
-            message = f"""{Messages.START_DEPLOYMENT}"""
-            utils = Utils(message)
-            utils.print_message()
+            message = Messages.START_DEPLOYMENT
+            print_message = Messages(message=message, color=Colors.GREEN)
+            print_message.print_message()
             process = subprocess.Popen(script_file_path)
             try:
                 while True:
@@ -328,33 +349,91 @@ class DjangoStarterGenerator():
 
     def start_script(self):
         """
-        Функция создания скрипта для запуска проекта Django на Windows.
+        Метод создания скрипта для запуска проекта Django на Windows.
         """
-        pass
+        # Создание скрипта страта нового проекта Django
+        start_script = f"""
+                            @echo off
+                            # del dsg_win.py
+                            # del sources.zip
+                            # del start.bat
+                            call ..\\env\\Scripts\\activate
+                            cd ..\\src
+                            python manage.py makemigrations
+                            python manage.py migrate
+                            python manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('{self.superuser_email}', '{self.superuser_email}', '{self.superuser_password}')"
+                            call ..\\env\\Scripts\\activate
+                            cd ..\\src
+                            python manage.py makemigrations
+                            python manage.py migrate
+                            pause
+                            start python manage.py runserver
+                            start "" http://localhost:8000
+                            """
+        # Создание bat файла
+        start_script_path = '..\start_script.bat'
+        with open(start_script_path, 'w') as file:
+            file.write(start_script)
+        # Запуск bat файла
+        process = subprocess.Popen(start_script_path)
+        try:
+            while True:
+                if process.poll() is not None:
+                    break
+        except KeyboardInterrupt:
+            process.kill()
+        # Удаление bat файла
+        os.remove(start_script_path)
+        utils = Utils()
+        utils.clear()
+        message = Messages.SUCCESS
+        print_message = Messages(message=message, color=Colors.GREEN)
+        print_message.print_message()
 
     def unzip_sources(self):
         """
-        Функция распаковки необходимых файлов для проекта.
+        Метод распаковки необходимых файлов для проекта.
         """
         pass
+
+    def final_reminds(self):
+        """
+        Метод, который выводит напоминания о необходимых действиях после создания проекта.
+        """
+        if Messages.reminds:  # Проверяем, не пустой ли список
+            message = f"""
+            Внимание! Вы отложили некоторые настройки на потом.
+
+            Не забудьте:\n
+            """
+            for remind in Messages.reminds:
+                # Добавляем напоминания в нужном формате
+                message += f'- {remind}\n'
+
+            print_message = Messages(message=message, color=Colors.YELLOW)
+            print_message.print_message()
+        else:
+            pass  # Если список пустой, ничего не делаем
 
     def main(self):
         # Приветствие пользователя.
         message = Messages.GREETING
-        utils = Utils(message)
+        utils = Utils()
         utils.clear()
         print(Messages.HERO)
-        utils.print_message()
+        print_message = Messages(message=message, color=Colors.GREEN)
+        print_message.print_message()
         # Создание, настройка и запуск проекта.
         self.get_initial_data()
         self.initial_script()
         self.unzip_sources()
         self.start_script()
-        # Сообщение об успешном создании проекта.
-        message = Messages.SUCCESS
-        utils = Utils(message)
-        utils.print_message()
+        # Напоминания.
+        self.final_reminds()
         print("\n", Messages.HERO)
+        # Запрос окончания работы.
+        input(
+            f"\n    Нажмите {Colors.CYAN}Enter{Colors.RESET} для завершения программы...")
 
 
 # ========================= Основные алгоритмы =========================== #
