@@ -1,7 +1,9 @@
 import os
 import re
+import shutil
 import subprocess
 import textwrap
+import time
 import zipfile
 from getpass import getpass
 
@@ -105,6 +107,7 @@ class Messages():
         """
         Вывод сообщения
         """
+        # time.sleep(0.5)  # Задержка перед выводом всего сообщения
         lines = self.message.split('\n')
         # очистка каждой строки от пробелов в начале и в конце
         lines = [line.strip() for line in lines]
@@ -389,8 +392,8 @@ class DjangoStarterGenerator():
                             set DJANGO_SUPERUSER_EMAIL={self.superuser_email}
                             set DJANGO_SUPERUSER_PASSWORD={self.superuser_password}
                             python manage.py createsuperuser --no-input
-                            call env\\Scripts\\activate
-                            cd src
+                            REM call env\\Scripts\\activate
+                            REM cd src
                             python manage.py makemigrations
                             python manage.py migrate
                             start python manage.py runserver
@@ -535,26 +538,16 @@ class DjangoStarterGenerator():
 
     def delete_dsg_folder(self):
         """Метод удаления папки dsg, чтобы остался только чистый проект"""
-        delete_script = textwrap.dedent(f"""
-                            @echo off
-                            pushd ..
-                            rmdir /s /q dsg
-                            popd
-                            """)
-        # Создание bat файла
-        delete_script_path = '..\delete_script.bat'
-        with open(delete_script_path, 'w') as file:
-            file.write(delete_script)
-        # Запуск bat файла
-        process = subprocess.Popen(delete_script_path)
-        try:
-            while True:
-                if process.poll() is not None:
-                    break
-        except KeyboardInterrupt:
-            process.kill()
-        # Удаление bat файла
-        os.remove(delete_script_path)
+        # Получаем путь к директории dsg.
+        dsg_folder = os.getcwd()
+        for attempt in range(5):  # Попытка удалить 5 раз
+            try:
+                shutil.rmtree(dsg_folder)
+                # print(f"Директория '{dsg_folder}' успешно удалена.")
+                return
+            except Exception as e:
+                # print(f"Ошибка при удалении директории: {e}")
+                time.sleep(1)  # Задержка перед повторной попыткой
 
     def main(self):
         # Приветствие пользователя.
@@ -574,8 +567,8 @@ class DjangoStarterGenerator():
         self.start_script()
         # Напоминания.
         self.final_reminds()
-        print("\n", Messages.HERO)
         # Запрос окончания работы.
+        print("\n", Messages.HERO)
         input(
             f"\n    Нажмите {Colors.CYAN}Enter{Colors.RESET} для завершения программы...")
         # Удаляем исходники, оставляя чистый проект.
