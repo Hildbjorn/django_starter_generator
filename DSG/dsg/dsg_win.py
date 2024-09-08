@@ -369,7 +369,7 @@ class DjangoStarterGenerator():
                             cd ..\\src
                             python manage.py makemigrations
                             python manage.py migrate
-                            python manage.py shell -c "from users.models import CustomUser; CustomUser.objects.create_superuser('{self.superuser_email}', '{self.superuser_password}'"
+                            python manage.py shell -c "from users.models import CustomUser; CustomUser.objects.create_superuser('{self.superuser_email}', '{self.superuser_password}')"
                             call ..\\env\\Scripts\\activate
                             cd ..\\src
                             python manage.py makemigrations
