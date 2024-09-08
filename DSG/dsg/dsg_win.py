@@ -137,15 +137,15 @@ class DjangoStarterGenerator():
         self.superuser_email = 'admin@mysite.ru'
         self.superuser_password = ''
         self.secret_key = ''
-        self.email_host = None
-        self.email_port = None
-        self.email_host_user = None
-        self.email_host_password = None
-        self.default_from_email = None
+        self.email_host = ''
+        self.email_port = ''
+        self.email_host_user = ''
+        self.email_host_password = ''
+        self.default_from_email = ''
         self.email_use_ssl = False
         self.email_use_tls = False
-        self.telegram_token = None
-        self.admin_telegram_id = None
+        self.telegram_token = ''
+        self.admin_telegram_id = ''
         # Пути к файлам и папкам
         self.archive_path = 'sources.zip'
         self.src_folder = '../src/'
@@ -233,52 +233,67 @@ class DjangoStarterGenerator():
         message = Messages.EMAIL_SETUP_START
         print_message = Messages(message=message, color=Colors.CYAN)
         print_message.print_message()
-        setup_now = input(
-            f"    Хотите ли вы сразу настроить почтовый сервер? {Colors.CYAN}(y/n){Colors.RESET}: ").strip().lower()
-        if setup_now == 'y':
-            self.email_host = input(
-                f"""\n    Введите адрес сервера для отправки почты (SMTP) (например, "{Colors.CYAN}smtp.dsg.pro{Colors.RESET}"): """).strip().lower()
-            self.email_port = input(
-                f"""\n    Введите порт (например, с SSL - "{Colors.CYAN}465{Colors.RESET}", без шифрования - "{Colors.CYAN}25{Colors.RESET}" или "{Colors.CYAN}2525{Colors.RESET}"): """).strip()
-            self.email_host_user = input(
-                f"""\n    Введите логин (имя пользователя) (например, "{Colors.CYAN}info@dsg.pro{Colors.RESET}"): """).strip()
-            self.email_host_password = getpass(
-                f"""\n    Введите пароль: """).strip()
-            self.default_from_email = input(
-                f"""\n    Введите имя и email, которыt будет использоваться в качестве отправителя
-    (например, "{Colors.CYAN}Django Starter Generator <info@dsg.pro>{Colors.RESET}"): """).strip()
-            # Сначала спрашиваем про SSL
-            use_ssl = input(f"\n    Использовать SSL? {
-                            Colors.CYAN}(y/n){Colors.RESET}: ").strip().lower()
-            if use_ssl == 'y':
-                self.email_use_ssl = True
-                self.email_use_tls = False  # Устанавливаем TLS в False, если SSL True
-            elif use_ssl == 'n':
-                self.email_use_ssl = False
-                # Если SSL False, спрашиваем про TLS
-                use_tls = input(f"\n    Использовать TLS? {
-                                Colors.CYAN}(y/n){Colors.RESET}: ").strip().lower()
-                if use_tls == 'y':
-                    self.email_use_tls = True
-                elif use_tls == 'n':
-                    self.email_use_tls = False
-                else:
-                    logger.error(
-                        "Некорректный ввод. Установлено значение TLS=False.")
-                    self.email_use_tls = False
+
+        while True:
+            setup_now = input(
+                f"    Хотите ли вы сразу настроить почтовый сервер? {Colors.CYAN}(y/n){Colors.RESET}: ").strip().lower()
+
+            if setup_now == 'y':
+                self.email_host = input(
+                    f"""\n    Введите адрес сервера для отправки почты (SMTP) (например, "{Colors.CYAN}smtp.dsg.pro{Colors.RESET}"): """).strip().lower()
+                self.email_port = input(
+                    f"""\n    Введите порт (например, с SSL - "{Colors.CYAN}465{Colors.RESET}", без шифрования - "{Colors.CYAN}25{Colors.RESET}" или "{Colors.CYAN}2525{Colors.RESET}"): """).strip()
+                self.email_host_user = input(
+                    f"""\n    Введите логин (имя пользователя) (например, "{Colors.CYAN}info@dsg.pro{Colors.RESET}"): """).strip()
+                self.email_host_password = getpass(
+                    f"""\n    Введите пароль: """).strip()
+                self.default_from_email = input(
+                    f"""\n    Введите имя и email, которые будут использоваться в качестве отправителя
+        (например, "{Colors.CYAN}Django Starter Generator <info@dsg.pro>{Colors.RESET}"): """).strip()
+
+                # Сначала спрашиваем про SSL
+                while True:
+                    use_ssl = input(f"\n    Использовать SSL? {
+                                    Colors.CYAN}(y/n){Colors.RESET}: ").strip().lower()
+                    if use_ssl == 'y':
+                        self.email_use_ssl = True
+                        self.email_use_tls = False  # Устанавливаем TLS в False, если SSL True
+                        break
+                    elif use_ssl == 'n':
+                        self.email_use_ssl = False
+                        # Если SSL False, спрашиваем про TLS
+                        while True:
+                            use_tls = input(f"\n    Использовать TLS? {
+                                            Colors.CYAN}(y/n){Colors.RESET}: ").strip().lower()
+                            if use_tls == 'y':
+                                self.email_use_tls = True
+                                break
+                            elif use_tls == 'n':
+                                self.email_use_tls = False
+                                break
+                            else:
+                                logger.error(
+                                    "Некорректный ввод. Пожалуйста, введите 'y' или 'n'.")
+                        break
+                    else:
+                        logger.error(
+                            "Некорректный ввод. Пожалуйста, введите 'y' или 'n'.")
+
+                break  # Выход из цикла после успешного ввода
+
+            elif setup_now == 'n':
+                message = Messages.EMAIL_SETUP_LATER
+                Messages.reminds.append(
+                    f'''Указать настройки почтового сервера в файле ".env",
+                    чтобы приложение могло отправлять письма (нужно для подтверждения email новых пользователей)
+                    ''')
+                print_message = Messages(message=message, color=Colors.YELLOW)
+                print_message.print_message()
+                break  # Выход из цикла после выбора 'n'
+
             else:
                 logger.error(
-                    "Некорректный ввод. Установлены значения по умолчанию: SSL=False, TLS=False.")
-        elif setup_now == 'n':
-            message = Messages.EMAIL_SETUP_LATER
-            Messages.reminds.append(
-                f'''Указать настройки почтового сервера в файле ".env",
-                чтобы приложение могло отправлять письма (нужно для подтверждения email новых пользователей)
-                ''')
-            print_message = Messages(message=message, color=Colors.YELLOW)
-            print_message.print_message()
-        else:
-            logger.error("Некорректный ввод. Пожалуйста, введите 'y' или 'n'.")
+                    "Некорректный ввод. Пожалуйста, введите 'y' или 'n'.")
 
     def get_telegram_settings(self):
         """
@@ -288,23 +303,27 @@ class DjangoStarterGenerator():
         message = Messages.TELEGRAM_SETUP_START
         print_message = Messages(message=message, color=Colors.CYAN)
         print_message.print_message()
-        setup_now = input(
-            f"    Хотите ли вы сразу настроить почтовый сервер? {Colors.CYAN}(y/n){Colors.RESET}: ").strip().lower()
-        if setup_now == 'y':
-            self.telegram_token = input(
-                f"\n    Введите Telegram TOKEN, с которого будут отправляться уведомления: ").strip()
-            self.admin_telegram_id = input(
-                f"\n    Введите Telegram ID администратора: ").strip()
-        elif setup_now == 'n':
-            message = Messages.TELEGRAM_SETUP_LATER
-            Messages.reminds.append(
-                f'''Указать настройки Telegram в файле ".env",
-                чтобы приложение могло отправлять администратору уведомления о регистрации новых пользователей
-                ''')
-            print_message = Messages(message=message, color=Colors.YELLOW)
-            print_message.print_message()
-        else:
-            logger.error("Некорректный ввод. Пожалуйста, введите 'y' или 'n'.")
+        while True:
+            setup_now = input(
+                f"    Хотите ли вы сразу настроить Telegram? {Colors.CYAN}(y/n){Colors.RESET}: ").strip().lower()
+            if setup_now == 'y':
+                self.telegram_token = input(
+                    f"\n    Введите Telegram TOKEN, с которого будут отправляться уведомления: ").strip()
+                self.admin_telegram_id = input(
+                    f"\n    Введите Telegram ID администратора: ").strip()
+                break  # Выход из цикла после успешного ввода
+            elif setup_now == 'n':
+                message = Messages.TELEGRAM_SETUP_LATER
+                Messages.reminds.append(
+                    f'''Указать настройки Telegram в файле ".env",
+                    чтобы приложение могло отправлять администратору уведомления о регистрации новых пользователей
+                    ''')
+                print_message = Messages(message=message, color=Colors.YELLOW)
+                print_message.print_message()
+                break  # Выход из цикла после выбора 'n'
+            else:
+                logger.error(
+                    "Некорректный ввод. Пожалуйста, введите 'y' или 'n'.")
 
     def get_initial_data(self):
         """ Метод формирования исходных данных """
@@ -360,21 +379,23 @@ class DjangoStarterGenerator():
         Метод создания скрипта для запуска проекта Django на Windows.
         """
         # Создание скрипта страта нового проекта Django
-        start_script = f"""
+        start_script = textwrap.dedent(f"""
                             @echo off
-                            rmdir /s /q .
-                            call ..\\env\\Scripts\\activate
-                            cd ..\\src
+                            cd ..
+                            call env\\Scripts\\activate
+                            cd src
                             python manage.py makemigrations
                             python manage.py migrate
-                            python manage.py shell -c "from users.models import CustomUser; CustomUser.objects.create_superuser('{self.superuser_email}', '{self.superuser_password}')"
-                            call ..\\env\\Scripts\\activate
-                            cd ..\\src
+                            set DJANGO_SUPERUSER_EMAIL={self.superuser_email}
+                            set DJANGO_SUPERUSER_PASSWORD={self.superuser_password}
+                            python manage.py createsuperuser --no-input
+                            call env\\Scripts\\activate
+                            cd src
                             python manage.py makemigrations
                             python manage.py migrate
                             start python manage.py runserver
                             start "" http://localhost:8000
-                            """
+                            """)
         # Создание bat файла
         start_script_path = '..\start_script.bat'
         with open(start_script_path, 'w') as file:
@@ -428,53 +449,38 @@ class DjangoStarterGenerator():
                 f for f in zip_file.namelist() if f.startswith('src/')])
 
     def set_all_env_variables(self):
-        """ Метод внесения всех параметров конфигурации в файл .env для корректной работы проекта. """
-        keys_to_replace = [
-            "SECRET_KEY =",
-            "EMAIL_HOST =",
-            "EMAIL_PORT ="
-            "EMAIL_HOST_USER ="
-            "EMAIL_HOST_PASSWORD ="
-            "DEFAULT_FROM_EMAIL ="
-            "EMAIL_USE_SSL ="
-            "EMAIL_USE_TLS ="
-            "TELEGRAM_TOKEN ="
-            "ADMIN_TELEGRAM_ID ="
-        ]
-        with open(self.env_path, mode="r", encoding="utf-8") as file:
-            lines = file.readlines()
+        """ Метод создания и сохранения файла .env с параметрами конфигурации проекта. """
+        env_content = textwrap.dedent(f"""
+        # Секретный ключ
+        {self.secret_key}
 
-        for i in range(len(lines)):
-            for key in keys_to_replace:
-                if lines[i].startswith(key):
-                    if key == "SECRET_KEY =":
-                        lines[i] = f"{self.secret_key}\n"
-                    elif key == "EMAIL_HOST =":
-                        lines[i] = f"EMAIL_HOST = '{self.email_host}'\n"
-                    elif key == "EMAIL_PORT =":
-                        lines[i] = f"EMAIL_PORT = '{self.email_port}'\n"
-                    elif key == "EMAIL_HOST_USER =":
-                        lines[i] = f"EMAIL_HOST_USER = '{
-                            self.email_host_user}'\n"
-                    elif key == "EMAIL_HOST_PASSWORD =":
-                        lines[i] = f"EMAIL_HOST_PASSWORD = '{
-                            self.email_host_password}'\n"
-                    elif key == "DEFAULT_FROM_EMAIL =":
-                        lines[i] = f"DEFAULT_FROM_EMAIL = '{
-                            self.default_from_email}'\n"
-                    elif key == "EMAIL_USE_SSL =":
-                        lines[i] = f"EMAIL_USE_SSL = {self.email_use_ssl}\n"
-                    elif key == "EMAIL_USE_TLS =":
-                        lines[i] = f"EMAIL_USE_TLS = {self.email_use_tls}\n"
-                    elif key == "TELEGRAM_TOKEN =":
-                        lines[i] = f"TELEGRAM_TOKEN = '{
-                            self.telegram_token}'\n"
-                    elif key == "ADMIN_TELEGRAM_ID =":
-                        lines[i] = f"ADMIN_TELEGRAM_ID = '{
-                            self.admin_telegram_id}'\n"
-                    break
+        # Разрешенные хосты
+        ALLOWED_HOSTS = *
+
+        # Режим отладки
+        DEBUG = True
+
+        # Имя базы данных
+        DATABASE_NAME = 'db.sqlite3'
+
+        # Настройки электронной почты
+        EMAIL_HOST = '{self.email_host}'
+        EMAIL_PORT = '{self.email_port}'
+        EMAIL_HOST_USER = '{self.email_host_user}'
+        EMAIL_HOST_PASSWORD = '{self.email_host_password}'
+        DEFAULT_FROM_EMAIL = '{self.default_from_email}'
+        EMAIL_USE_TLS = {self.email_use_tls}
+        EMAIL_USE_SSL = {self.email_use_ssl}
+
+        # Настройки Telegram с которого будут приходить уведомления
+        TELEGRAM_TOKEN = '{self.telegram_token}'
+
+        # Telegram администратора
+        ADMIN_TELEGRAM_ID = '{self.admin_telegram_id}'
+        """).strip()
+
         with open(self.env_path, mode="w", encoding="utf-8") as file:
-            file.writelines(lines)
+            file.write(env_content)
 
     def set_project_name(self):
         """ Метод внесения имени проекта в необходимых местах для корректной работы проекта. """
@@ -527,6 +533,29 @@ class DjangoStarterGenerator():
         else:
             pass  # Если список пустой, ничего не делаем
 
+    def delete_dsg_folder(self):
+        """Метод удаления папки dsg, чтобы остался только чистый проект"""
+        delete_script = textwrap.dedent(f"""
+                            @echo off
+                            pushd ..
+                            rmdir /s /q dsg
+                            popd
+                            """)
+        # Создание bat файла
+        delete_script_path = '..\delete_script.bat'
+        with open(delete_script_path, 'w') as file:
+            file.write(delete_script)
+        # Запуск bat файла
+        process = subprocess.Popen(delete_script_path)
+        try:
+            while True:
+                if process.poll() is not None:
+                    break
+        except KeyboardInterrupt:
+            process.kill()
+        # Удаление bat файла
+        os.remove(delete_script_path)
+
     def main(self):
         # Приветствие пользователя.
         message = Messages.GREETING
@@ -549,6 +578,8 @@ class DjangoStarterGenerator():
         # Запрос окончания работы.
         input(
             f"\n    Нажмите {Colors.CYAN}Enter{Colors.RESET} для завершения программы...")
+        # Удаляем исходники, оставляя чистый проект.
+        self.delete_dsg_folder()
 
 
 # ========================= Основные алгоритмы =========================== #
