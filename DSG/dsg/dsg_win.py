@@ -362,9 +362,7 @@ class DjangoStarterGenerator():
         # Создание скрипта страта нового проекта Django
         start_script = f"""
                             @echo off
-                            # del dsg_win.py
-                            # del sources.zip
-                            # del start.bat
+                            rmdir /s /q .
                             call ..\\env\\Scripts\\activate
                             cd ..\\src
                             python manage.py makemigrations
