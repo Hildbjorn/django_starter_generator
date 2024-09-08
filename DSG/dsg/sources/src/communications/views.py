@@ -1,6 +1,6 @@
 from django.core.mail import send_mail
 
-from <project_name>.settings import TELEGRAM_TOKEN, MY_TELEGRAM_ID, DEFAULT_FROM_EMAIL
+from <project_name>.settings import TELEGRAM_TOKEN, ADMIN_TELEGRAM_ID, DEFAULT_FROM_EMAIL
 
 
 def email_to_customer(subject, html_message, email):

@@ -119,13 +119,13 @@ class Messages():
 
 class Logger:
     def info(self, message):
-        print(f"{Colors.GREEN}[INFO]{Colors.RESET} {message}")
+        print(f"    {Colors.GREEN}[INFO]{Colors.RESET} {message}")
 
     def warning(self, message):
-        print(f"{Colors.YELLOW}[WARNING]{Colors.RESET} {message}")
+        print(f"    {Colors.YELLOW}[WARNING]{Colors.RESET} {message}")
 
     def error(self, message):
-        print(f"{Colors.RED}[ERROR]{Colors.RESET} {message}")
+        print(f"    {Colors.RED}[ERROR]{Colors.RESET} {message}")
 
 
 class DjangoStarterGenerator():
@@ -136,6 +136,7 @@ class DjangoStarterGenerator():
         self.project_name = 'core'
         self.superuser_email = 'admin@mysite.ru'
         self.superuser_password = ''
+        self.secret_key = ''
         self.email_host = None
         self.email_port = None
         self.email_host_user = None
@@ -145,6 +146,14 @@ class DjangoStarterGenerator():
         self.email_use_tls = False
         self.telegram_token = None
         self.admin_telegram_id = None
+        # Пути к файлам и папкам
+        self.archive_path = 'sources.zip'
+        self.src_folder = '../src/'
+        self.env_path = '../src/.env'
+        self.archive_settings_file = 'settings.py'
+        self.archive_views_file = 'views.py'
+        self.archive_urls_file = 'urls.py'
+        self.archive_gitignore_file = '.gitignore'
 
     def is_valid_password(self, password):
         """Метод проверки соответствия пароля заданным требованиям."""
@@ -175,7 +184,6 @@ class DjangoStarterGenerator():
         """
         project_name = input(
             f'    Введите название проекта (нажмите Enter для использования "{Colors.CYAN}{self.project_name}{Colors.RESET}"): ')
-
         if project_name.strip() != '':
             self.project_name = project_name.strip()
 
@@ -206,7 +214,7 @@ class DjangoStarterGenerator():
             password1 = getpass("    Введите пароль: ")
             password2 = getpass("    Введите пароль еще раз: ")
             if password1 != password2:
-                logger.error('    Пароли не совпадают. \n')
+                logger.error('Пароли не совпадают. \n')
                 continue
             if self.is_valid_password(password1):
                 self.superuser_password = password1
@@ -343,7 +351,7 @@ class DjangoStarterGenerator():
             except KeyboardInterrupt:
                 process.kill()
         else:
-            logger.error('    Ошибка! Скрипт не обнаружен.')
+            logger.error('Ошибка! Скрипт не обнаружен.')
         # Удаление bat файла
         os.remove(script_file_path)
 
@@ -361,12 +369,11 @@ class DjangoStarterGenerator():
                             cd ..\\src
                             python manage.py makemigrations
                             python manage.py migrate
-                            python manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('{self.superuser_email}', '{self.superuser_email}', '{self.superuser_password}')"
+                            python manage.py shell -c "from users.models import CustomUser; CustomUser.objects.create_superuser('{self.superuser_email}', '{self.superuser_password}'"
                             call ..\\env\\Scripts\\activate
                             cd ..\\src
                             python manage.py makemigrations
                             python manage.py migrate
-                            pause
                             start python manage.py runserver
                             start "" http://localhost:8000
                             """
@@ -390,11 +397,118 @@ class DjangoStarterGenerator():
         print_message = Messages(message=message, color=Colors.GREEN)
         print_message.print_message()
 
+    def get_secret_key(self):
+        """ Метод записи SECRET_KEY в файл .env """
+        # находим SECRET_KEY в файле settings.py
+        with open(f"{self.src_folder}{self.project_name}/{self.archive_settings_file}", "r") as file:
+            for line in file:
+                if line.startswith("SECRET_KEY"):
+                    self.secret_key = line.strip()
+
     def unzip_sources(self):
         """
         Метод распаковки необходимых файлов для проекта.
         """
-        pass
+        # извлечение settings.py в папку src/project_name
+        with zipfile.ZipFile(self.archive_path, 'r') as zip_file:
+            zip_file.extract(self.archive_settings_file,
+                             path=f"{self.src_folder}{self.project_name}")
+        # извлечение views.py в папку src/project_name
+        with zipfile.ZipFile(self.archive_path, 'r') as zip_file:
+            zip_file.extract(self.archive_views_file,
+                             path=f"{self.src_folder}{self.project_name}")
+        # извлечение urls.py в папку src/project_name
+        with zipfile.ZipFile(self.archive_path, 'r') as zip_file:
+            zip_file.extract(self.archive_urls_file,
+                             path=f"{self.src_folder}{self.project_name}")
+        # извлечение gitignore и src в текущую папку
+        with zipfile.ZipFile(self.archive_path, 'r') as zip_file:
+            zip_file.extract(self.archive_gitignore_file, path='../')
+        # Извлечение остальных файлов из архива
+        with zipfile.ZipFile(self.archive_path, 'r') as zip_file:
+            zip_file.extractall(path='../', members=[
+                f for f in zip_file.namelist() if f.startswith('src/')])
+
+    def set_all_env_variables(self):
+        """ Метод внесения всех параметров конфигурации в файл .env для корректной работы проекта. """
+        keys_to_replace = [
+            "SECRET_KEY =",
+            "EMAIL_HOST =",
+            "EMAIL_PORT ="
+            "EMAIL_HOST_USER ="
+            "EMAIL_HOST_PASSWORD ="
+            "DEFAULT_FROM_EMAIL ="
+            "EMAIL_USE_SSL ="
+            "EMAIL_USE_TLS ="
+            "TELEGRAM_TOKEN ="
+            "ADMIN_TELEGRAM_ID ="
+        ]
+        with open(self.env_path, mode="r", encoding="utf-8") as file:
+            lines = file.readlines()
+
+        for i in range(len(lines)):
+            for key in keys_to_replace:
+                if lines[i].startswith(key):
+                    if key == "SECRET_KEY =":
+                        lines[i] = f"{self.secret_key}\n"
+                    elif key == "EMAIL_HOST =":
+                        lines[i] = f"EMAIL_HOST = '{self.email_host}'\n"
+                    elif key == "EMAIL_PORT =":
+                        lines[i] = f"EMAIL_PORT = '{self.email_port}'\n"
+                    elif key == "EMAIL_HOST_USER =":
+                        lines[i] = f"EMAIL_HOST_USER = '{
+                            self.email_host_user}'\n"
+                    elif key == "EMAIL_HOST_PASSWORD =":
+                        lines[i] = f"EMAIL_HOST_PASSWORD = '{
+                            self.email_host_password}'\n"
+                    elif key == "DEFAULT_FROM_EMAIL =":
+                        lines[i] = f"DEFAULT_FROM_EMAIL = '{
+                            self.default_from_email}'\n"
+                    elif key == "EMAIL_USE_SSL =":
+                        lines[i] = f"EMAIL_USE_SSL = {self.email_use_ssl}\n"
+                    elif key == "EMAIL_USE_TLS =":
+                        lines[i] = f"EMAIL_USE_TLS = {self.email_use_tls}\n"
+                    elif key == "TELEGRAM_TOKEN =":
+                        lines[i] = f"TELEGRAM_TOKEN = '{
+                            self.telegram_token}'\n"
+                    elif key == "ADMIN_TELEGRAM_ID =":
+                        lines[i] = f"ADMIN_TELEGRAM_ID = '{
+                            self.admin_telegram_id}'\n"
+                    break
+        with open(self.env_path, mode="w", encoding="utf-8") as file:
+            file.writelines(lines)
+
+    def set_project_name(self):
+        """ Метод внесения имени проекта в необходимых местах для корректной работы проекта. """
+        # В файле settings.py
+        with open(f"{self.src_folder}{self.project_name}/settings.py", mode="r", encoding="utf-8") as file:
+            lines = file.readlines()
+
+        for i in range(len(lines)):
+            lines[i] = lines[i].replace("<project_name>", self.project_name)
+
+        with open(f"{self.src_folder}{self.project_name}/settings.py", mode="w", encoding="utf-8") as file:
+            file.writelines(lines)
+
+        # В файле urls.py
+        with open(f"{self.src_folder}{self.project_name}/urls.py", mode="r", encoding="utf-8") as file:
+            lines = file.readlines()
+
+        for i in range(len(lines)):
+            lines[i] = lines[i].replace("<project_name>", self.project_name)
+
+        with open(f"{self.src_folder}{self.project_name}/urls.py", mode="w", encoding="utf-8") as file:
+            file.writelines(lines)
+
+        # В файле communications/views.py
+        with open(f"{self.src_folder}communications/views.py", mode="r", encoding="utf-8") as file:
+            lines = file.readlines()
+
+        for i in range(len(lines)):
+            lines[i] = lines[i].replace("<project_name>", self.project_name)
+
+        with open(f"{self.src_folder}communications/views.py", mode="w", encoding="utf-8") as file:
+            file.writelines(lines)
 
     def final_reminds(self):
         """
@@ -426,7 +540,10 @@ class DjangoStarterGenerator():
         # Создание, настройка и запуск проекта.
         self.get_initial_data()
         self.initial_script()
+        self.get_secret_key()
         self.unzip_sources()
+        self.set_all_env_variables()
+        self.set_project_name()
         self.start_script()
         # Напоминания.
         self.final_reminds()

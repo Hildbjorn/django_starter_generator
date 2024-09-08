@@ -156,8 +156,8 @@ EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', '').lower() in [
 TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN')
 
 # Мои настройки Telegram
-MY_TELEGRAM_ID = os.getenv('MY_TELEGRAM_ID')
-if MY_TELEGRAM_ID:
-    MY_TELEGRAM_ID = [int(id) for id in MY_TELEGRAM_ID.split(',')]
+ADMIN_TELEGRAM_ID = os.getenv('ADMIN_TELEGRAM_ID')
+if ADMIN_TELEGRAM_ID:
+    ADMIN_TELEGRAM_ID = [int(id) for id in ADMIN_TELEGRAM_ID.split(',')]
 else:
-    MY_TELEGRAM_ID = []
+    ADMIN_TELEGRAM_ID = []
