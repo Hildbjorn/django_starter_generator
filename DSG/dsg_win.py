@@ -568,42 +568,44 @@ class DjangoStarterGenerator():
 
         if Messages.reminds:  # Проверяем, не пустой ли список
             message = f"""
-Внимание! Вы отложили некоторые настройки на потом.
+            Внимание! Вы отложили некоторые настройки на потом.
 
-Не забудьте:
+            Не забудьте:
             """
             for remind in Messages.reminds:
                 # Добавляем напоминания в нужном формате
                 message += f'\n- {remind}'
-            message += textwrap.dedent(
-                f"""-------------------------------------------------------------------""").strip()
 
             # Форматирование визитки
         dsg_card = textwrap.dedent(f"""
 
-██████╗     ███████╗     ██████╗     Django Starter Generator -
-██╔══██╗    ██╔════╝    ██╔════╝     приложение для автоматизации
-██║  ██║    ███████╗    ██║  ███╗    создания, настройки и первого
-██║  ██║    ╚════██║    ██║   ██║    запуска проектов на Django.
-██████╔╝    ███████║    ╚██████╔╝
-╚═════╝     ╚══════╝     ╚═════╝     Copyright (c) 2024 Artem Fomin
+                                        ██████╗     ███████╗     ██████╗     Django Starter Generator -
+                                        ██╔══██╗    ██╔════╝    ██╔════╝     приложение для автоматизации
+                                        ██║  ██║    ███████╗    ██║  ███╗    создания, настройки и первого
+                                        ██║  ██║    ╚════██║    ██║   ██║    запуска проектов на Django.
+                                        ██████╔╝    ███████║    ╚██████╔╝
+                                        ╚═════╝     ╚══════╝     ╚═════╝     Copyright (c) 2024 Artem Fomin
 
--------------------------------------------------------------------
+                                        -------------------------------------------------------------------
 
-Github: https://github.com/Hildbjorn/django_starter_generator
+                                        Github: https://github.com/Hildbjorn/django_starter_generator
 
--------------------------------------------------------------------
+                                        {current_time}: Создан проект: {self.project_name}.
 
-{current_time}: Создан проект: {self.project_name}.
+                                        {message}
 
--------------------------------------------------------------------
-{message}
+                                        Спасибо, за внимание к проекту!
+                                                """).strip()
+        # Удаление лишних пробелов в начале строк
+        dsg_card_lines = dsg_card.splitlines()
+        # Удаляем пробелы в начале каждой строки
+        dsg_card_lines = [line.lstrip() for line in dsg_card_lines]
+        # Объединяем строки обратно
+        dsg_card_cleaned = '\n'.join(dsg_card_lines)
 
-Спасибо, за внимание к проекту!
-        """).strip()
         # Сохранение визитки в файл
         with open('dsg_card.txt', 'w', encoding='utf-8') as file:
-            file.write(dsg_card.strip())
+            file.write(dsg_card_cleaned.strip())
 
     def main(self):
         # Приветствие пользователя.
