@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<!--                                                                                                                                                              
+<!--                                                                                                                                                               
 ██████╗     ███████╗     ██████╗     Django Starter Generator -
 ██╔══██╗    ██╔════╝    ██╔════╝     приложение для автоматизации
 ██║  ██║    ███████╗    ██║  ███╗    создания, настройки и первого
 ██║  ██║    ╚════██║    ██║   ██║    запуска проектов на Django.
 ██████╔╝    ███████║    ╚██████╔╝
-╚═════╝     ╚══════╝     ╚═════╝     Copyright (c) 2024 Artem Fomin     -->
+╚═════╝     ╚══════╝     ╚═════╝     Copyright (c) 2024 Artem Fomin      -->
 {% load static %}
 {% load compress %}
 {% load django_bootstrap5 %}
@@ -64,6 +64,8 @@
       {% endblock %}
       <!-- ******* ******** -->
     </main>
+    <!-- JavaScript -->
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
     <!-- Bootstrap в связке с Popper -->
     {% bootstrap_javascript %}
     <!-- Включение Popper везде -->
