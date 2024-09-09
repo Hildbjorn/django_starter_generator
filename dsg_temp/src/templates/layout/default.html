@@ -1,0 +1,19 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="container">
+    <div class="hero">
+      <img src="{% static 'img/elements/hero.webp' %}" alt="DSG" />
+      <h1>Django Starter Generator</h1>
+      <h3>Установка прошла успешно! Поздравляю!</h3>
+      <p>
+        Посмотреть <a href="https://docs.djangoproject.com/en/5.1/releases/" target="_blank" rel="noopener">примечания к выпуску</a> для Django 5.1
+      </p>
+      <p>
+        Вы видите данную страницу, потому что указали <a href="https://docs.djangoproject.com/en/5.1/ref/settings/#debug" target="_blank" rel="noopener">DEBUG=True</a> в файле настроек и не настроили ни одного обработчика URL-адресов.
+      </p>
+      <a class="logo" href="https://www.djangoproject.com/" target="_blank" rel="noopener">Django</a>
+    </div>
+  </div>
+{% endblock %}

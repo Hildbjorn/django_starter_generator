@@ -1,0 +1,32 @@
+/* Шрифты Google Fonts Roboto */
+/* 300 font weight */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    src: url(../fonts/Roboto/Roboto-Regular.ttf) format('truetype');
+}
+
+/* 500 font weight */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    src: url(../fonts/Roboto/Roboto-Medium.ttf) format('truetype');
+}
+
+/* 700 font weight */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    src: url(../fonts/Roboto/Roboto-Bold.ttf) format('truetype');
+}
+
+/* 900 font weight */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 900;
+    src: url(../fonts/Roboto/Roboto-Black.ttf) format('truetype');
+}

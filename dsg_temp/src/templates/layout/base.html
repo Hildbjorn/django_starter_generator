@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<!--                                                                                                                                                               
+<!--                                                                                                                                                                            
 ██████╗     ███████╗     ██████╗     Django Starter Generator -
 ██╔══██╗    ██╔════╝    ██╔════╝     приложение для автоматизации
 ██║  ██║    ███████╗    ██║  ███╗    создания, настройки и первого
 ██║  ██║    ╚════██║    ██║   ██║    запуска проектов на Django.
 ██████╔╝    ███████║    ╚██████╔╝
-╚═════╝     ╚══════╝     ╚═════╝     Copyright (c) 2024 Artem Fomin      -->
+╚═════╝     ╚══════╝     ╚═════╝     Copyright (c) 2024 Artem Fomin                   -->
 {% load static %}
 {% load compress %}
 {% load django_bootstrap5 %}
@@ -55,15 +55,19 @@
       <meta itemprop="image" content="{% static 'img/elements/hero.png' %}" />
     {% endblock %}
   </head>
-  <body>
-    <!-- Основной контент страницы -->
-    <main class="d-flex flex-column flex-fill bg-body">
-      <!-- Контент страницы -->
+  <body class="d-flex flex-column">
+    <!-- Header -->
+    {% include 'layout/header/header.html' %}
+
+    <main class="d-flex flex-column flex-fill justify-content-center bg-body">
       {% block content %}
-        Контент страницы
+        <div class="container">Тут отображается контент главной страницы</div>
       {% endblock %}
-      <!-- ******* ******** -->
     </main>
+
+    <!-- Footer -->
+    {% include 'layout/footer/footer.html' %}
+
     <!-- JavaScript -->
     <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
     <!-- Bootstrap в связке с Popper -->
