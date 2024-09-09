@@ -1,19 +1,52 @@
 {% extends 'layout/base.html' %}
 {% load static %}
 
+{% block title %}
+  DSG - Главная
+{% endblock %}
+
+<!-- META TAGS -->
+{% block meta_tags %}
+  <!-- Основные -->
+  <meta name="description" content="Django Starter Generator - приложение для автоматизации создания, настройки и первого запуска проектов на Django." />
+  <meta name="keywords" content="Шаблон, Проект, Django, Генератор" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://github.com/Hildbjorn/django_starter_generator" />
+
+  <!-- Для Фейсбука, ВКонтакте, Одноклассников и Гуглплюса -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Django Starter Generator" />
+  <meta property="og:title" content="Django Starter Generator" />
+  <meta property="og:description" content="Django Starter Generator - приложение для автоматизации создания, настройки и первого запуска проектов на Django." />
+  <meta property="og:url" content="https://github.com/Hildbjorn/django_starter_generator" />
+  <meta property="og:locale" content="ru_RU" />
+
+  <!-- Для Твиттера и Вконтакта -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Django Starter Generator" />
+  <meta name="twitter:description" content="Django Starter Generator - приложение для автоматизации создания, настройки и первого запуска проектов на Django." />
+  <meta name="twitter:image:src" content="{% static 'img/elements/hero.png' %}" />
+  <meta name="twitter:url" content="https://github.com/Hildbjorn/django_starter_generator" />
+  <meta name="twitter:domain" content="Django Starter Generator" />
+  <meta name="twitter:site" content="Django Starter Generator" />
+  <meta name="twitter:creator" content="@stratman.pro" />
+
+  <!-- Для Гуглплюса -->
+  <meta itemprop="name" content="Django Starter Generator" />
+  <meta itemprop="description" content="Django Starter Generator - приложение для автоматизации создания, настройки и первого запуска проектов на Django." />
+  <meta itemprop="image" content="{% static 'img/elements/hero.png' %}" />
+{% endblock %}
 {% block content %}
   <div class="container">
     <div class="hero">
       <img src="{% static 'img/elements/hero.webp' %}" alt="DSG" />
       <h1>Django Starter Generator</h1>
-      <h3>Установка прошла успешно! Поздравляю!</h3>
-      <p>
-        Посмотреть <a href="https://docs.djangoproject.com/en/5.1/releases/" target="_blank" rel="noopener">примечания к выпуску</a> для Django 5.1
+      <h3 class="mt-3">Установка прошла успешно! Поздравляю!</h3>
+      <p class="mt-3">Django Starter Generator (DSG)&nbsp;&mdash; это инструмент, предназначенный для упрощения и&nbsp;ускорения процесса создания новых проектов на&nbsp;базе Django в&nbsp;операционной системе Windows. DSG позволяет пользователям быстро настраивать проекты, автоматизирует процесс установки необходимых компонентов и&nbsp;библиотек, а&nbsp;также предоставляет функционал авторизации через email, уведомления в&nbsp;Telegram и&nbsp;возможность редактирования профилей пользователей.</p>
+      <p class="mt-3">
+        Подробности <a href="https://github.com/Hildbjorn/django_starter_generator" target="_blank" rel="noopener">на GitHub</a>
       </p>
-      <p>
-        Вы видите данную страницу, потому что указали <a href="https://docs.djangoproject.com/en/5.1/ref/settings/#debug" target="_blank" rel="noopener">DEBUG=True</a> в файле настроек и не настроили ни одного обработчика URL-адресов.
-      </p>
-      <a class="logo" href="https://www.djangoproject.com/" target="_blank" rel="noopener">Django</a>
+      <a class="logo mt-5" href="https://www.djangoproject.com/" target="_blank" rel="noopener">Django</a>
     </div>
   </div>
 {% endblock %}

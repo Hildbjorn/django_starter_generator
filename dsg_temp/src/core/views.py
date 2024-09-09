@@ -10,6 +10,10 @@ class MyForm(forms.Form):
     email = forms.EmailField()
 
 
+class DefaultPageView(TemplateView):
+    template_name = 'layout/default.html'
+
+
 class IndexPageView(TemplateView):
     template_name = 'home/index.html'
 
