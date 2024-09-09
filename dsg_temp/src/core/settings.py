@@ -1,4 +1,10 @@
 """
+██████╗     ███████╗     ██████╗     Django Starter Generator -
+██╔══██╗    ██╔════╝    ██╔════╝     приложение для автоматизации
+██║  ██║    ███████╗    ██║  ███╗    создания, настройки и первого
+██║  ██║    ╚════██║    ██║   ██║    запуска проектов на Django.
+██████╔╝    ███████║    ╚██████╔╝
+╚═════╝     ╚══════╝     ╚═════╝     Copyright (c) 2024 Artem Fomin
 Настройки Django для проекта <project_name>
 """
 import os
@@ -128,6 +134,8 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
 
+SASS_PROCESSOR_ROOT = STATIC_ROOT
+
 STATIC_URL = '/static/'
 
 # Настройки для правильной обрабатки SCSS
@@ -138,7 +146,7 @@ COMPRESS_PRECOMPILERS = (
 # Настройки Django-Bootstrap
 BOOTSTRAP5 = {
     "javascript_url": {
-        "url": "/static/js/bootstrap/bootstrap.bundle.min.js",
+        "url": "/static/bootstrap/js/bootstrap.bundle.min.js",
     },
 }
 

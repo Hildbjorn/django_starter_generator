@@ -1,23 +1,21 @@
 <!DOCTYPE html>
-{% load static %}
-{% load compress %}
-{% load django_bootstrap5 %}
-
-<!--                                                                                                                                                          
+<!--                                                                                                                                                              
 ██████╗     ███████╗     ██████╗     Django Starter Generator -
 ██╔══██╗    ██╔════╝    ██╔════╝     приложение для автоматизации
 ██║  ██║    ███████╗    ██║  ███╗    создания, настройки и первого
 ██║  ██║    ╚════██║    ██║   ██║    запуска проектов на Django.
 ██████╔╝    ███████║    ╚██████╔╝
-╚═════╝     ╚══════╝     ╚═════╝     Copyright (c) 2024 Artem Fomin
-                                                                                                                                                           -->
+╚═════╝     ╚══════╝     ╚═════╝     Copyright (c) 2024 Artem Fomin     -->
+{% load static %}
+{% load compress %}
+{% load django_bootstrap5 %}
 
 <html lang="ru" data-bs-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {% compress css %}
-    <link type="text/x-scss" href="{% static 'scss/bootstrap/bootstrap.scss' %}" rel="stylesheet" media="screen" />
+    <link type="text/x-scss" href="{% static 'scss/main.scss' %}" rel="stylesheet" media="screen" />
     {% endcompress %}
     <title>
       {% block title %}
