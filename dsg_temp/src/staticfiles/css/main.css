@@ -9257,6 +9257,8 @@ html {
     html body h1, html body .h1 {
       color: #000000;
       font-weight: 900; }
+      html body h1 .head_span, html body .h1 .head_span {
+        color: red; }
     html body h2, html body .h2 {
       color: #000000;
       font-weight: 700; }
@@ -9293,6 +9295,45 @@ main .hero {
 
 footer {
   color: #808080; }
+  footer .footer_wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 960px;
+    gap: 5px;
+    position: relative;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%); }
+    footer .footer_wrapper .option {
+      display: grid;
+      grid-template-columns: min-content 1fr;
+      gap: 10px;
+      box-sizing: border-box;
+      text-decoration: none; }
+      footer .footer_wrapper .option svg {
+        width: 1.5rem;
+        height: 1.5rem;
+        fill: #808080;
+        border: 1px solid #808080;
+        padding: 5px;
+        border-radius: 100%; }
+      footer .footer_wrapper .option .option__heading {
+        color: #092e20;
+        font-size: 1.25rem;
+        font-weight: 400; }
+      footer .footer_wrapper .option p {
+        font-weight: 300;
+        line-height: 1.25;
+        color: #808080;
+        display: table; }
+    footer .footer_wrapper .sr-only {
+      clip: rect(1px, 1px, 1px, 1px);
+      clip-path: inset(50%);
+      height: 1px;
+      overflow: hidden;
+      position: absolute;
+      white-space: nowrap;
+      width: 1px; }
 
 /* Шрифты Google Fonts Roboto */
 /* 300 font weight */

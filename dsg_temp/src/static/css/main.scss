@@ -9,7 +9,8 @@
 $font-stack: Roboto, sans-serif;
 $headings-color: #000000;
 $link-color: #297082;
-$comment-color: #808080;
+$comment-title-color: #092e20;
+$comment-text-color: #808080;
 $hero-size: 30%;
 // ----------------------------------------------------------------------
 
@@ -28,6 +29,10 @@ html {
         h1 {
             color: $headings-color;
             font-weight: 900;
+
+            .head_span {
+                color: red;
+            }
         }
 
         h2 {
@@ -82,7 +87,58 @@ main {
 }
 
 footer {
-    color: $comment-color;
+    color: $comment-text-color;
+
+    .footer_wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        width: 960px;
+        gap: 5px;
+        position: relative;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+
+        .option {
+            display: grid;
+            grid-template-columns: min-content 1fr;
+            gap: 10px;
+            box-sizing: border-box;
+            text-decoration: none;
+
+            svg {
+                width: 1.5rem;
+                height: 1.5rem;
+                fill: $comment-text-color;
+                border: 1px solid $comment-text-color;
+                padding: 5px;
+                border-radius: 100%;
+            }
+
+            .option__heading {
+                color: $comment-title-color;
+                font-size: 1.25rem;
+                font-weight: 400;
+            }
+
+            p {
+                font-weight: 300;
+                line-height: 1.25;
+                color: $comment-text-color;
+                display: table;
+            }
+        }
+
+        .sr-only {
+            clip: rect(1px, 1px, 1px, 1px);
+            clip-path: inset(50%);
+            height: 1px;
+            overflow: hidden;
+            position: absolute;
+            white-space: nowrap;
+            width: 1px;
+        }
+    }
 
 }
 
