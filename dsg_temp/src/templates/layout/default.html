@@ -1,52 +1,268 @@
-{% extends 'layout/base.html' %}
+<!DOCTYPE html>
+<!--                                                                                                                                                                                             
+██████╗     ███████╗     ██████╗     Django Starter Generator -
+██╔══██╗    ██╔════╝    ██╔════╝     приложение для автоматизации
+██║  ██║    ███████╗    ██║  ███╗    создания, настройки и первого
+██║  ██║    ╚════██║    ██║   ██║    запуска проектов на Django.
+██████╔╝    ███████║    ╚██████╔╝
+╚═════╝     ╚══════╝     ╚═════╝     Copyright (c) 2024 Artem Fomin                                    -->
 {% load static %}
+{% load compress %}
+{% load django_bootstrap5 %}
 
-{% block title %}
-  DSG - Главная
-{% endblock %}
+<html lang="ru" data-bs-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      html {
+        height: 100%;
+      }
+      /* line 23, static/scss/main.scss */
+      html body {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        height: 100%;
+        font: 100% Roboto, sans-serif;
+      }
+      /* line 27, static/scss/main.scss */
+      html body h1 {
+        color: #000000;
+        font-weight: 900;
+      }
+      /* line 32, static/scss/main.scss */
+      html body h2 {
+        color: #000000;
+        font-weight: 700;
+      }
+      /* line 37, static/scss/main.scss */
+      html body p {
+        line-height: 150%;
+      }
+      /* line 41, static/scss/main.scss */
+      html body a {
+        color: #297082;
+      }
+      header img {
+        max-width: 60px;
+        max-height: 60px;
+        width: auto;
+        height: auto;
+      }
+      main {
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+        flex: 1 0;
+      }
+      /* line 48, static/scss/main.scss */
+      main .hero {
+        text-align: center;
+      }
+      /* line 51, static/scss/main.scss */
+      main .hero img {
+        max-width: 30%;
+        max-height: 30%;
+        width: auto;
+        height: auto;
+      }
+      /* line 58, static/scss/main.scss */
+      main .hero .logo {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 19.16 6.696'%3E%3Cg fill='rgb(9 46 32)'%3E%3Cpath d='m2.259 3.55e-8h1.048v4.851c-0.5377 0.1021-0.9324 0.1429-1.361 0.1429-1.279 0-1.946-0.5784-1.946-1.688 0-1.068 0.7078-1.763 1.804-1.763 0.1701 0 0.2994 0.01365 0.456 0.0544v-1.598zm0 2.442c-0.1225-0.04079-0.2246-0.0544-0.3539-0.0544-0.5308 0-0.8371 0.3267-0.8371 0.8983 0 0.5582 0.2927 0.8644 0.8303 0.8644 0.1156 0 0.211-0.00681 0.3607-0.02713z'/%3E%3Cpath d='m4.975 1.618v2.43c0 0.837-0.06125 1.239-0.245 1.586-0.1702 0.3335-0.3948 0.5444-0.8575 0.7758l-0.9732-0.4628c0.4628-0.2178 0.6874-0.4082 0.8303-0.701 0.1498-0.2994 0.1974-0.6466 0.1974-1.559v-2.069zm-1.048-1.613h1.048v1.075h-1.048z'/%3E%3Cpath d='m5.608 1.857c0.4628-0.2178 0.9052-0.313 1.388-0.313 0.5377 0 0.8915 0.1429 1.048 0.422 0.08842 0.1565 0.1156 0.3606 0.1156 0.7963v2.13c-0.4696 0.06814-1.062 0.1157-1.497 0.1157-0.8779 0-1.273-0.3063-1.273-0.9868 0-0.7351 0.524-1.075 1.81-1.184v-0.2314c0-0.1905-0.09527-0.2585-0.3607-0.2585-0.3879 0-0.8235 0.1088-1.232 0.3198v-0.8099zm1.64 1.667c-0.6942 0.06814-0.9188 0.177-0.9188 0.4492 0 0.2042 0.1293 0.2995 0.4152 0.2995 0.1566 0 0.2994-0.01365 0.5036-0.04759z'/%3E%3Cpath d='m8.671 1.782c0.6193-0.1634 1.13-0.2382 1.647-0.2382 0.5377 0 0.9256 0.1224 1.157 0.3607 0.2178 0.2245 0.2858 0.4695 0.2858 0.9936v2.055h-1.048v-2.015c0-0.4015-0.1361-0.5513-0.5104-0.5513-0.1429 0-0.2722 0.01365-0.4833 0.0749v2.491h-1.048v-3.171z'/%3E%3Cpath d='m12.17 5.525c0.3676 0.1905 0.735 0.279 1.123 0.279 0.6873 0 0.98-0.279 0.98-0.946v-0.0205c-0.2042 0.1021-0.4084 0.143-0.6805 0.143-0.9188 0-1.504-0.6058-1.504-1.565 0-1.191 0.8644-1.865 2.396-1.865 0.4492 0 0.8644 0.04759 1.368 0.1496l-0.3589 0.7561c-0.2791-0.05449-0.02235-0.00733-0.2332-0.02775v0.1089l0.01357 0.4423 0.0068 0.5717c0.0068 0.1428 0.0068 0.2858 0.01365 0.4287v0.2859c0 0.8984-0.07486 1.32-0.2994 1.667-0.3267 0.5105-0.8916 0.7623-1.695 0.7623-0.4084 0-0.7622-0.06129-1.13-0.2042v-0.9663zm2.083-3.131h-0.03398-0.0749c-0.2041-0.00681-0.4423 0.04759-0.6057 0.1497-0.2517 0.143-0.3811 0.4016-0.3811 0.7691 0 0.5241 0.2587 0.8235 0.7214 0.8235 0.1429 0 0.2586-0.02722 0.3947-0.06805v-0.3607c0-0.1225-0.0068-0.2587-0.0068-0.4016l-0.0068-0.4832-0.0068-0.3471v-0.08171z'/%3E%3Cpath d='m17.48 1.53c1.048 0 1.688 0.6602 1.688 1.729 0 1.096-0.6669 1.783-1.729 1.783-1.048 0-1.695-0.6601-1.695-1.722 4.4e-5 -1.103 0.667-1.79 1.736-1.79zm-0.0205 2.668c0.4016 0 0.6398-0.3335 0.6398-0.912 0-0.5716-0.2314-0.9119-0.6329-0.9119-0.4152 0-0.6535 0.3336-0.6535 0.9119 4.4e-5 0.5786 0.2383 0.912 0.6465 0.912z'/%3E%3C/g%3E%3C/svg%3E");
+        color: #092e20;
+        background-position-x: center;
+        background-repeat: no-repeat;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-top: 16px;
+        overflow: hidden;
+        text-decoration: none;
+        text-indent: 100%;
+        display: inline-block;
+      }
+      .container {
+        width: 960px;
+        margin: 0 auto;
+        padding: 0.5rem;
+      }
+      /* line 77, static/scss/main.scss */
+      footer .footer_wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        width: 960px;
+        gap: 5px;
+        position: relative;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+      }
+      /* line 87, static/scss/main.scss */
+      footer .footer_wrapper .option {
+        display: grid;
+        grid-template-columns: min-content 1fr;
+        gap: 10px;
+        box-sizing: border-box;
+        text-decoration: none;
+      }
+      /* line 95, static/scss/main.scss */
+      footer .footer_wrapper .option svg {
+        width: 1.5rem;
+        height: 1.5rem;
+        fill: gray;
+        border: 1px solid #d6d6d6;
+        padding: 5px;
+        border-radius: 100%;
+      }
+      /* line 104, static/scss/main.scss */
+      footer .footer_wrapper .option p {
+        font-weight: 300;
+        line-height: 1.25;
+        color: #525252;
+        display: table;
+      }
+      /* line 111, static/scss/main.scss */
+      footer .footer_wrapper .option .option__heading {
+        color: #092e20;
+        font-size: 1.25rem;
+        font-weight: 400;
+      }
+      /* line 117, static/scss/main.scss */
+      footer .footer_wrapper .sr-only {
+        clip: rect(1px, 1px, 1px, 1px);
+        clip-path: inset(50%);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+      }
+      
+      /* Шрифты Google Fonts Roboto */
+      /* 300 font weight */
+      @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 300;
+        src: url(/static/fonts/Roboto/Roboto-Regular.ttf) format('truetype');
+      }
+      
+      /* 500 font weight */
+      @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 500;
+        src: url(/static/fonts/Roboto/Roboto-Medium.ttf) format('truetype');
+      }
+      
+      /* 700 font weight */
+      @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 700;
+        src: url(/static/fonts/Roboto/Roboto-Bold.ttf) format('truetype');
+      }
+      
+      /* 900 font weight */
+      @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 900;
+        src: url(/static/fonts/Roboto/Roboto-Black.ttf) format('truetype');
+      }
+    </style>
+    <title>
+      {% block title %}
+        Django Starter Generator
+      {% endblock %}
+    </title>
+    {% include 'layout/favicon.html' %}
+    <!-- META TAGS (меняются в подключаемых страницах) -->
+    {% block meta_tags %}
+      <!-- Основные -->
+      <meta name="description" content="Django Starter Generator - приложение для автоматизации создания, настройки и первого запуска проектов на Django." />
+      <meta name="keywords" content="Шаблон, Проект, Django, Генератор" />
+      <meta name="robots" content="index,follow" />
+      <link rel="canonical" href="https://github.com/Hildbjorn/django_starter_generator" />
 
-<!-- META TAGS -->
-{% block meta_tags %}
-  <!-- Основные -->
-  <meta name="description" content="Django Starter Generator - приложение для автоматизации создания, настройки и первого запуска проектов на Django." />
-  <meta name="keywords" content="Шаблон, Проект, Django, Генератор" />
-  <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://github.com/Hildbjorn/django_starter_generator" />
+      <!-- Для Фейсбука, ВКонтакте, Одноклассников и Гуглплюса -->
+      <meta property="og:type" content="website" />
+      <meta property="og:site_name" content="Django Starter Generator" />
+      <meta property="og:title" content="Django Starter Generator" />
+      <meta property="og:description" content="Django Starter Generator - приложение для автоматизации создания, настройки и первого запуска проектов на Django." />
+      <meta property="og:url" content="https://github.com/Hildbjorn/django_starter_generator" />
+      <meta property="og:locale" content="ru_RU" />
 
-  <!-- Для Фейсбука, ВКонтакте, Одноклассников и Гуглплюса -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Django Starter Generator" />
-  <meta property="og:title" content="Django Starter Generator" />
-  <meta property="og:description" content="Django Starter Generator - приложение для автоматизации создания, настройки и первого запуска проектов на Django." />
-  <meta property="og:url" content="https://github.com/Hildbjorn/django_starter_generator" />
-  <meta property="og:locale" content="ru_RU" />
+      <!-- Для Твиттера и Вконтакта -->
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content="Django Starter Generator" />
+      <meta name="twitter:description" content="Django Starter Generator - приложение для автоматизации создания, настройки и первого запуска проектов на Django." />
+      <meta name="twitter:image:src" content="{% static 'img/elements/hero.png' %}" />
+      <meta name="twitter:url" content="https://github.com/Hildbjorn/django_starter_generator" />
+      <meta name="twitter:domain" content="Django Starter Generator" />
+      <meta name="twitter:site" content="Django Starter Generator" />
+      <meta name="twitter:creator" content="@stratman.pro" />
 
-  <!-- Для Твиттера и Вконтакта -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Django Starter Generator" />
-  <meta name="twitter:description" content="Django Starter Generator - приложение для автоматизации создания, настройки и первого запуска проектов на Django." />
-  <meta name="twitter:image:src" content="{% static 'img/elements/hero.png' %}" />
-  <meta name="twitter:url" content="https://github.com/Hildbjorn/django_starter_generator" />
-  <meta name="twitter:domain" content="Django Starter Generator" />
-  <meta name="twitter:site" content="Django Starter Generator" />
-  <meta name="twitter:creator" content="@stratman.pro" />
+      <!-- Для Гуглплюса -->
+      <meta itemprop="name" content="Django Starter Generator" />
+      <meta itemprop="description" content="Django Starter Generator - приложение для автоматизации создания, настройки и первого запуска проектов на Django." />
+      <meta itemprop="image" content="{% static 'img/elements/hero.png' %}" />
+    {% endblock %}
+  </head>
+  <body class="d-flex flex-column">
+    <header class="bg-body-tertiary p-3">
+      <div class="container">
+        <img src="{% static 'img/elements/logo.png' %}" alt="" />
+      </div>
+    </header>
 
-  <!-- Для Гуглплюса -->
-  <meta itemprop="name" content="Django Starter Generator" />
-  <meta itemprop="description" content="Django Starter Generator - приложение для автоматизации создания, настройки и первого запуска проектов на Django." />
-  <meta itemprop="image" content="{% static 'img/elements/hero.png' %}" />
-{% endblock %}
-{% block content %}
-  <div class="container">
-    <div class="hero">
-      <img src="{% static 'img/elements/hero.webp' %}" alt="DSG" />
-      <h1>Django Starter Generator</h1>
-      <h3 class="mt-3">Установка прошла успешно! Поздравляю!</h3>
-      <p class="mt-3">Django Starter Generator (DSG)&nbsp;&mdash; это инструмент, предназначенный для упрощения и&nbsp;ускорения процесса создания новых проектов на&nbsp;базе Django в&nbsp;операционной системе Windows. DSG позволяет пользователям быстро настраивать проекты, автоматизирует процесс установки необходимых компонентов и&nbsp;библиотек, а&nbsp;также предоставляет функционал авторизации через email, уведомления в&nbsp;Telegram и&nbsp;возможность редактирования профилей пользователей.</p>
-      <p class="mt-3">
-        Подробности <a href="https://github.com/Hildbjorn/django_starter_generator" target="_blank" rel="noopener">на GitHub</a>
-      </p>
-      <a class="logo mt-5" href="https://www.djangoproject.com/" target="_blank" rel="noopener">Django</a>
-    </div>
-  </div>
-{% endblock %}
+    <main class="d-flex flex-column flex-fill justify-content-center bg-body">
+      <div class="container">
+        <div class="hero">
+          <img src="{% static 'img/elements/hero.webp' %}" alt="DSG" />
+          <h1>Django Starter Generator</h1>
+          <p class="mt-3">Django Starter Generator (DSG)&nbsp;&mdash; это инструмент, предназначенный для упрощения и&nbsp;ускорения процесса создания новых проектов на&nbsp;базе Django в&nbsp;операционной системе Windows. DSG позволяет пользователям быстро настраивать проекты, автоматизирует процесс установки необходимых компонентов и&nbsp;библиотек, а&nbsp;также предоставляет функционал авторизации через email, уведомления в&nbsp;Telegram и&nbsp;возможность редактирования профилей пользователей.</p>
+          <p class="mt-3">
+            Подробности <a href="https://github.com/Hildbjorn/django_starter_generator" target="_blank" rel="noopener">на GitHub</a>
+          </p>
+          <a class="logo mt-5" href="https://www.djangoproject.com/" target="_blank" rel="noopener">Django</a>
+        </div>
+      </div>
+    </main>
+
+    <footer class="bg-body-tertiary d-flex justify-content-between p-3">
+      <div class="container">
+        <div class="footer_wrapper">
+          <a class="option" href="https://docs.djangoproject.com/en/5.1/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6A4.997 4.997 0 017 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"></path>
+            </svg>
+            <p>
+              <span class="option__heading">Документация Django</span><span class="sr-only">.</span><br />
+              Разделы, справочник, &amp; примеры
+            </p>
+          </a>
+          <a class="option" href="https://docs.djangoproject.com/en/5.1/intro/tutorial01/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"></path>
+            </svg>
+            <p>
+              <span class="option__heading">Руководство: Приложение для голосования</span><span class="sr-only">.</span><br />
+              Начало работы с Django
+            </p>
+          </a>
+          <a class="option" href="https://www.djangoproject.com/community/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M16.5 13c-1.2 0-3.07.34-4.5 1-1.43-.67-3.3-1-4.5-1C5.33 13 1 14.08 1 16.25V19h22v-2.75c0-2.17-4.33-3.25-6.5-3.25zm-4 4.5h-10v-1.25c0-.54 2.56-1.75 5-1.75s5 1.21 5 1.75v1.25zm9 0H14v-1.25c0-.46-.2-.86-.52-1.22.88-.3 1.96-.53 3.02-.53 2.44 0 5 1.21 5 1.75v1.25zM7.5 12c1.93 0 3.5-1.57 3.5-3.5S9.43 5 7.5 5 4 6.57 4 8.5 5.57 12 7.5 12zm0-5.5c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm9 5.5c1.93 0 3.5-1.57 3.5-3.5S18.43 5 16.5 5 13 6.57 13 8.5s1.57 3.5 3.5 3.5zm0-5.5c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"></path>
+            </svg>
+            <p>
+              <span class="option__heading">Сообщество Django</span><span class="sr-only">.</span><br />
+              Присоединяйтесь, получайте помощь или помогайте в разработке
+            </p>
+          </a>
+        </div>
+        <div class="container mt-3 text-center">Copyright (c) 2024 Artem Fomin</div>
+      </div>
+    </footer>
+  </body>
+</html>

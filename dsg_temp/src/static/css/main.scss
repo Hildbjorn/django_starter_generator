@@ -9,6 +9,7 @@
 $font-stack: Roboto, sans-serif;
 $headings-color: #000000;
 $link-color: #297082;
+$comment-color: #808080;
 $hero-size: 30%;
 // ----------------------------------------------------------------------
 
@@ -44,6 +45,15 @@ html {
     }
 }
 
+header {
+    img {
+        max-width: 60px;
+        max-height: 60px;
+        width: auto;
+        height: auto;
+    }
+}
+
 main {
     .hero {
         text-align: center;
@@ -72,58 +82,8 @@ main {
 }
 
 footer {
+    color: $comment-color;
 
-    // СДЕЛАТЬ: footer_wrapper нужно будет переделывать - это временно
-    .footer_wrapper {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        width: 960px;
-        gap: 5px;
-        position: relative;
-        left: 50%;
-        bottom: 0;
-        transform: translateX(-50%);
-
-        .option {
-            display: grid;
-            grid-template-columns: min-content 1fr;
-            gap: 10px;
-            box-sizing: border-box;
-            text-decoration: none;
-        }
-
-        .option svg {
-            width: 1.5rem;
-            height: 1.5rem;
-            fill: gray;
-            border: 1px solid #d6d6d6;
-            padding: 5px;
-            border-radius: 100%;
-        }
-
-        .option p {
-            font-weight: 300;
-            line-height: 1.25;
-            color: #525252;
-            display: table;
-        }
-
-        .option .option__heading {
-            color: #092e20;
-            font-size: 1.25rem;
-            font-weight: 400;
-        }
-
-        .sr-only {
-            clip: rect(1px, 1px, 1px, 1px);
-            clip-path: inset(50%);
-            height: 1px;
-            overflow: hidden;
-            position: absolute;
-            white-space: nowrap;
-            width: 1px;
-        }
-    }
 }
 
 // ----------------------------------------------------------------------

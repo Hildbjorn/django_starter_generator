@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'compressor',
+    'sass_processor',
     'django_bootstrap5',
 ]
 
@@ -125,7 +125,7 @@ USE_TZ = True
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
+    'sass_processor.finders.CssFinder',
 ]
 
 STATICFILES_DIRS = [
@@ -137,11 +137,6 @@ STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
 SASS_PROCESSOR_ROOT = STATIC_ROOT
 
 STATIC_URL = '/static/'
-
-# Настройки для правильной обрабатки SCSS
-COMPRESS_PRECOMPILERS = (
-    ('text/x-scss', 'django_libsass.SassCompiler'),
-)
 
 # Настройки Django-Bootstrap
 BOOTSTRAP5 = {
