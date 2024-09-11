@@ -157,6 +157,7 @@ class DjangoStarterGenerator():
         self.archive_settings_file = 'settings.py'
         self.archive_views_file = 'views.py'
         self.archive_urls_file = 'urls.py'
+        self.archive_utils_file = 'utils.py'
         self.archive_gitignore_file = '.gitignore'
 
     def is_valid_password(self, password):
@@ -360,8 +361,14 @@ class DjangoStarterGenerator():
                                                 pip install django-widget-tweaks --quiet
                                                 echo     - Installing libsass...
                                                 pip install libsass --quiet
+                                                echo     - Installing Pillow...
+                                                pip install Pillow --quiet
+                                                echo     - Installing pytils...
+                                                pip install pytils --quiet
                                                 echo     - Installing Python-Dotenv...
                                                 pip install python-dotenv --quiet
+                                                echo     - Installing python-slugify...
+                                                pip install python-slugify --quiet
                                                 echo     - Installing Telepot...
                                                 pip install telepot --quiet
                                                 echo     - Installing Typus...
@@ -462,6 +469,10 @@ class DjangoStarterGenerator():
         with zipfile.ZipFile(self.archive_path, 'r') as zip_file:
             zip_file.extract(self.archive_urls_file,
                              path=f"{self.src_folder}{self.project_name}")
+        # извлечение utils.py в папку src/project_name
+        with zipfile.ZipFile(self.archive_path, 'r') as zip_file:
+            zip_file.extract(self.archive_utils_file,
+                             path=f"{self.src_folder}{self.project_name}")
         # извлечение gitignore и src в текущую папку
         with zipfile.ZipFile(self.archive_path, 'r') as zip_file:
             zip_file.extract(self.archive_gitignore_file, path='../')
@@ -509,31 +520,33 @@ class DjangoStarterGenerator():
         # В файле settings.py
         with open(f"{self.src_folder}{self.project_name}/settings.py", mode="r", encoding="utf-8") as file:
             lines = file.readlines()
-
         for i in range(len(lines)):
             lines[i] = lines[i].replace("<project_name>", self.project_name)
-
         with open(f"{self.src_folder}{self.project_name}/settings.py", mode="w", encoding="utf-8") as file:
             file.writelines(lines)
 
         # В файле urls.py
         with open(f"{self.src_folder}{self.project_name}/urls.py", mode="r", encoding="utf-8") as file:
             lines = file.readlines()
-
         for i in range(len(lines)):
             lines[i] = lines[i].replace("<project_name>", self.project_name)
-
         with open(f"{self.src_folder}{self.project_name}/urls.py", mode="w", encoding="utf-8") as file:
             file.writelines(lines)
 
-        # В файле communications/views.py
-        with open(f"{self.src_folder}communications/views.py", mode="r", encoding="utf-8") as file:
+        # В файле users/views.py
+        with open(f"{self.src_folder}users/views.py", mode="r", encoding="utf-8") as file:
             lines = file.readlines()
-
         for i in range(len(lines)):
             lines[i] = lines[i].replace("<project_name>", self.project_name)
+        with open(f"{self.src_folder}users/views.py", mode="w", encoding="utf-8") as file:
+            file.writelines(lines)
 
-        with open(f"{self.src_folder}communications/views.py", mode="w", encoding="utf-8") as file:
+        # В файле users/models.py
+        with open(f"{self.src_folder}users/models.py", mode="r", encoding="utf-8") as file:
+            lines = file.readlines()
+        for i in range(len(lines)):
+            lines[i] = lines[i].replace("<project_name>", self.project_name)
+        with open(f"{self.src_folder}users/models.py", mode="w", encoding="utf-8") as file:
             file.writelines(lines)
 
     def final_reminds(self):
