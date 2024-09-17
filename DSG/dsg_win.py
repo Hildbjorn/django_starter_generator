@@ -473,10 +473,6 @@ class DjangoStarterGenerator():
         with zipfile.ZipFile(self.archive_path, 'r') as zip_file:
             zip_file.extract(self.archive_urls_file,
                              path=f"{self.src_folder}{self.project_name}")
-        # извлечение utils.py в папку src/project_name
-        with zipfile.ZipFile(self.archive_path, 'r') as zip_file:
-            zip_file.extract(self.archive_utils_file,
-                             path=f"{self.src_folder}{self.project_name}")
         # извлечение gitignore и src в текущую папку
         with zipfile.ZipFile(self.archive_path, 'r') as zip_file:
             zip_file.extract(self.archive_gitignore_file, path='../')
@@ -513,7 +509,7 @@ class DjangoStarterGenerator():
         TELEGRAM_TOKEN = '{self.telegram_token}'
 
         # Telegram администратора
-        ADMIN_TELEGRAM_ID = '{self.admin_telegram_id}'
+        USERS_TELEGRAM_ID = '{self.admin_telegram_id}'
         """).strip()
 
         with open(self.env_path, mode="w", encoding="utf-8") as file:
@@ -535,22 +531,6 @@ class DjangoStarterGenerator():
         for i in range(len(lines)):
             lines[i] = lines[i].replace("<project_name>", self.project_name)
         with open(f"{self.src_folder}{self.project_name}/urls.py", mode="w", encoding="utf-8") as file:
-            file.writelines(lines)
-
-        # В файле users/views.py
-        with open(f"{self.src_folder}users/views.py", mode="r", encoding="utf-8") as file:
-            lines = file.readlines()
-        for i in range(len(lines)):
-            lines[i] = lines[i].replace("<project_name>", self.project_name)
-        with open(f"{self.src_folder}users/views.py", mode="w", encoding="utf-8") as file:
-            file.writelines(lines)
-
-        # В файле users/models.py
-        with open(f"{self.src_folder}users/models.py", mode="r", encoding="utf-8") as file:
-            lines = file.readlines()
-        for i in range(len(lines)):
-            lines[i] = lines[i].replace("<project_name>", self.project_name)
-        with open(f"{self.src_folder}users/models.py", mode="w", encoding="utf-8") as file:
             file.writelines(lines)
 
     def final_reminds(self):
